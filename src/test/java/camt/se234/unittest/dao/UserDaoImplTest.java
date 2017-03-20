@@ -21,6 +21,7 @@ public class UserDaoImplTest {
                         new User("Tucky","5675","Tuckung",
                                 LocalDate.of(2014,11,22),"08687654321")
                 ));
+       
     }
 
 
