@@ -1,24 +1,16 @@
 package camt.se234.unittest.dao;
 import camt.se234.unittest.entity.User;
+import camt.se234.unittest.exception.OldDateException;
 import camt.se234.unittest.service.UserServiceImpl;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import java.time.LocalDate;
-
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.containsInAnyOrder;
-
 import static org.hamcrest.Matchers.contains;
-
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.hamcrest.core.IsNull.nullValue;
-
-
 public class UserDaoImplTest {
     @Test
     public void testGetUsers() {
@@ -32,9 +24,7 @@ public class UserDaoImplTest {
                                 LocalDate.of(2012, 11, 13), "0000000000"),
                         new User("None", "none", "NoName",
                                 LocalDate.of(2112, 1, 1), "9999999999")
-
                 ));
-
         assertThat(userDao.getUsers(),
                 contains(new User("Prayuth", "1234", "Tu",
                                 LocalDate.of(1979, 2, 14), "08612345678"),
@@ -44,7 +34,6 @@ public class UserDaoImplTest {
                                 LocalDate.of(2012, 11, 13), "0000000000"),
                         new User("None", "none", "NoName",
                                 LocalDate.of(2112, 1, 1), "9999999999"),
-
                         new User("Baibai", "5678", "Thanya",
                                 LocalDate.of(1997, 5, 12), "0899994567"),
                         new User("Fernfern", "rrtg", "Tommy",
@@ -53,7 +42,6 @@ public class UserDaoImplTest {
                                 LocalDate.of(1999, 1, 30), "0899994567"),
                         new User("Sora", "horizon", "Aryami",
                                 LocalDate.of(2001, 6, 4), "0899994567"),
-
                         new User("Gaanploo", "1111", "Myla",
                                 LocalDate.of(1995, 10, 30), "0234567890"),
                         new User("Baifern", "5555", "Fern",
@@ -62,7 +50,6 @@ public class UserDaoImplTest {
                                 LocalDate.of(2055, 1, 16), "0004400000"),
                         new User("Hello", "none", "Oldman",
                                 LocalDate.of(1915, 1, 10), "9992354999"),
-
                         new User("Nora", "nilnil", "Vicheka",
                                 LocalDate.of(1995, 11, 01), "09367862666"),
                         new User("Jack", "jackpot001", "Jack The Giant Slayer",
@@ -71,7 +58,6 @@ public class UserDaoImplTest {
                                 LocalDate.of(1990, 01, 01), "00912323423"),
                         new User("Vathanaka", "3434V", "Chan",
                                 LocalDate.of(1995, 04, 30), "01234348569")
-
                 ));
         assertThat(userDao.getUsers(),
                 containsInAnyOrder(new User("Prayuth", "1234", "Tu",
@@ -82,7 +68,6 @@ public class UserDaoImplTest {
                                 LocalDate.of(2012, 11, 13), "0000000000"),
                         new User("None", "none", "NoName",
                                 LocalDate.of(2112, 1, 1), "9999999999"),
-
                         new User("Baibai", "5678", "Thanya",
                                 LocalDate.of(1997, 5, 12), "0899994567"),
                         new User("Fernfern", "rrtg", "Tommy",
@@ -91,7 +76,6 @@ public class UserDaoImplTest {
                                 LocalDate.of(1999, 1, 30), "0899994567"),
                         new User("Sora", "horizon", "Aryami",
                                 LocalDate.of(2001, 6, 4), "0899994567"),
-
                         new User("Gaanploo", "1111", "Myla",
                                 LocalDate.of(1995, 10, 30), "0234567890"),
                         new User("Baifern", "5555", "Fern",
@@ -100,7 +84,6 @@ public class UserDaoImplTest {
                                 LocalDate.of(2055, 1, 16), "0004400000"),
                         new User("Hello", "none", "Oldman",
                                 LocalDate.of(1915, 1, 10), "9992354999"),
-
                         new User("Nora", "nilnil", "Vicheka",
                                 LocalDate.of(1995, 11, 01), "09367862666"),
                         new User("Jack", "jackpot001", "Jack The Giant Slayer",
@@ -109,36 +92,28 @@ public class UserDaoImplTest {
                                 LocalDate.of(1990, 01, 01), "00912323423"),
                         new User("Vathanaka", "3434V", "Chan",
                                 LocalDate.of(1995, 04, 30), "01234348569")
-
                 ));
-
     }
     @Test
-    public void testLogin() {
+    public void testAbleToGoToPub() {
         UserServiceImpl userService = new UserServiceImpl();
         UserDaoImpl userDao = new UserDaoImpl();
         userService.setUserDao(userDao);
-
-        assertThat(userService.login("Prayuth", "1234"), is(new User("Prayuth", "1234", "Tu",
-                LocalDate.of(1979, 2, 14), "08612345678")));
-        assertThat(userService.login("Abc", "1234"), is(nullValue()));
+        assertThat(userService.isAbleToGoToPub(new User("Gaanploo", "1111", "Myla",
+                LocalDate.of(1995, 10, 30), "0234567890"), LocalDate.now()), is(true));
+        thrown.expect(OldDateException.class);
+        assertThat(userService.isAbleToGoToPub(new User("Bob", "qwerty", "Bob",
+                LocalDate.of(2055, 1, 16), "0004400000"), LocalDate.now()), is(false));
     }
-
-
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void testLoginException(){
         UserServiceImpl userService = new UserServiceImpl();
         UserDaoImpl userDao = new UserDaoImpl();
         userService.setUserDao(userDao);
-        // check for the exception we expect
+// check for the exception we expect
         thrown.expect(NullPointerException.class);
         userService.login("","");
     }
-
-
-
 }
