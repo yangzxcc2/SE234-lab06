@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl  {
     List<User> users;
 
     public UserDaoImpl() {
@@ -53,8 +53,8 @@ public class UserDaoImpl implements UserDao {
         return users;
     }
 
-    @Override
-    public User findById(long id) {
-        return null;
+//    @Override
+//    public User findById(long id) {
+//        return null;
     }
-}
+
